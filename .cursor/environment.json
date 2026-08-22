@@ -1,0 +1,25 @@
+{
+  "name": "Amline Inquiry Analytics",
+  "user": "ubuntu",
+  "repositoryDependencies": [
+    "origin.cursor.com/behzad-amline/amline-production"
+  ],
+  "install": "bash .cursor/scripts/cloud-agent-install.sh",
+  "start": "bash .cursor/scripts/cloud-agent-start.sh",
+  "ports": [
+    { "name": "admin-ui", "port": 3001 },
+    { "name": "api", "port": 8100 }
+  ],
+  "terminals": [
+    {
+      "name": "api",
+      "command": "bash .cursor/scripts/run-api.sh",
+      "description": "FastAPI backend on :8100"
+    },
+    {
+      "name": "admin",
+      "command": "bash .cursor/scripts/run-admin.sh",
+      "description": "Admin UI on :3001"
+    }
+  ]
+}
