@@ -15,7 +15,7 @@ if [[ -f frontend/apps/admin/package.json ]]; then
 fi
 
 if [[ -f package.json ]]; then
-  exec npm run dev -- --port 3001 --hostname 0.0.0.0
+  exec npm run dev -- --port 43123 --hostname 0.0.0.0
 fi
 
 echo "Admin entrypoint not found. Adjust .cursor/scripts/run-admin.sh after checkout."
