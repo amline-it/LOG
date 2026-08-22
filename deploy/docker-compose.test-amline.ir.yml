@@ -1,0 +1,24 @@
+# Traefik deployment for test.amline.ir (212.80.24.56)
+# Run on the server: docker compose -f deploy/docker-compose.test-amline.ir.yml up -d
+
+services:
+  log-dashboard:
+    image: ghcr.io/amline-it/log-dashboard:staging
+    container_name: amline-log-dashboard-test
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 43123
+      HOSTNAME: 0.0.0.0
+    networks:
+      - backend_default
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.amline-log.rule: Host(`test.amline.ir`)
+      traefik.http.routers.amline-log.entrypoints: websecure
+      traefik.http.routers.amline-log.tls.certresolver: myresolver
+      traefik.http.services.amline-log.loadbalancer.server.port: "43123"
+
+networks:
+  backend_default:
+    external: true

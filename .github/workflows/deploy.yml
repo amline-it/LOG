@@ -53,7 +53,10 @@ jobs:
             git fetch origin main
             git checkout main
             git pull origin main
-            docker compose pull || true
-            docker compose build --pull
-            docker compose up -d
+            if [ "${{ secrets.DEPLOY_HOST }}" = "212.80.24.56" ]; then
+              bash deploy/deploy-test-amline.ir.sh
+            else
+              bash deploy/one-shot-staging.sh
+              echo "Configure nginx from deploy/nginx-s.amline.ir-staging.conf if needed"
+            fi
             curl -fsS http://127.0.0.1:43123/inquiries/analytics >/dev/null
