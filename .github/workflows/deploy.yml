@@ -29,6 +29,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/amline-it/log-dashboard:latest
+            ghcr.io/amline-it/log-dashboard:staging
             ghcr.io/amline-it/log-dashboard:${{ github.sha }}
 
   deploy:
