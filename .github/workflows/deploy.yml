@@ -1,0 +1,30 @@
+name: Deploy LOG Dashboard
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            export DEPLOY_DIR=/opt/amline-log
+            export REPO_URL=git@github.com:amline-it/LOG.git
+            if [ ! -d "$DEPLOY_DIR/.git" ]; then
+              git clone "$REPO_URL" "$DEPLOY_DIR"
+            fi
+            cd "$DEPLOY_DIR"
+            git fetch origin main
+            git checkout main
+            git pull origin main
+            docker compose build --pull
+            docker compose up -d
+            curl -fsS http://127.0.0.1:43123/inquiries/analytics >/dev/null

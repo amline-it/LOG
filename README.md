@@ -42,6 +42,24 @@ src/
     types/monitoring.ts
 ```
 
+## Repository
+
+- **هدف:** `amline-it/LOG` (GitHub یا Origin)
+- **دامنه:** `https://s.amline.ir/inquiries/analytics`
+
+## Deploy روی s.amline.ir
+
+```bash
+git clone git@github.com:amline-it/LOG.git /opt/amline-log
+cd /opt/amline-log
+docker compose up -d --build
+sudo cp deploy/nginx-s.amline.ir.conf /etc/nginx/sites-available/s.amline.ir
+sudo ln -sf /etc/nginx/sites-available/s.amline.ir /etc/nginx/sites-enabled/s.amline.ir
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+GitHub Actions: secrets `DEPLOY_HOST`, `DEPLOY_USER`, `SSH_PRIVATE_KEY`
+
 ## نکته Cloud Agent
 
 repo اصلی `amline-production` در این محیط در دسترس نبود؛ این slice مستقل برای نمایش UI و مدل داده Service Sources ساخته شده و آماده اتصال به backend واقعی است.

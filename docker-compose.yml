@@ -1,0 +1,11 @@
+services:
+  log-dashboard:
+    build: .
+    container_name: amline-log-dashboard
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:43123:43123"
+    environment:
+      - NODE_ENV=production
+      - PORT=43123
+      - HOSTNAME=0.0.0.0
