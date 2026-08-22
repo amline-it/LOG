@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-# Backend (اگر پوشه backend هست)
-if [ -f backend/requirements.txt ]; then
-  pip install -r backend/requirements.txt
+cd "$(dirname "$0")/../.."
+
+if [[ ! -f package.json ]]; then
+  echo "package.json not found in $(pwd)"
+  exit 1
 fi
 
-# Admin UI (اگر پوشه admin-ui هست)
-if [ -f admin-ui/package.json ]; then
-  cd admin-ui
-  npm ci
-  cp -n .env.staging.example .env.staging 2>/dev/null || true
-  cd ..
-fi
+npm ci
 
 echo "Install done"

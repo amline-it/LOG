@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-if [ -d admin-ui ]; then
-  cd admin-ui
-  npm run dev:staging -- --host 0.0.0.0 --port 3001
+set -euo pipefail
+
+cd "$(dirname "$0")/../.."
+
+if [[ ! -d node_modules ]]; then
+  bash .cursor/scripts/cloud-agent-install.sh
 fi
+
+echo "LOG monitoring environment ready (dev server runs in terminals)"
