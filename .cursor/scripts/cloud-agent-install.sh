@@ -1,38 +1,17 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 
-ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-cd "$ROOT"
-
-if [[ -f backend/requirements.txt ]]; then
-  python3 -m venv .venv
-  # shellcheck disable=SC1091
-  source .venv/bin/activate
-  pip install -U pip wheel
+# Backend (اگر پوشه backend هست)
+if [ -f backend/requirements.txt ]; then
   pip install -r backend/requirements.txt
 fi
 
-if [[ -f backend/pyproject.toml ]]; then
-  python3 -m venv .venv
-  source .venv/bin/activate
-  pip install -U pip wheel
-  pip install -e backend
-fi
-
-if [[ -f admin/package.json ]]; then
-  cd admin
+# Admin UI (اگر پوشه admin-ui هست)
+if [ -f admin-ui/package.json ]; then
+  cd admin-ui
   npm ci
-  cd "$ROOT"
+  cp -n .env.staging.example .env.staging 2>/dev/null || true
+  cd ..
 fi
 
-if [[ -f frontend/apps/admin/package.json ]]; then
-  cd frontend/apps/admin
-  npm ci
-  cd "$ROOT"
-fi
-
-if [[ -f package.json && ! -f admin/package.json ]]; then
-  npm ci
-fi
-
-echo "Install complete."
+echo "Install done"
